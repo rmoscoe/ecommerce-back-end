@@ -48,6 +48,7 @@ Product.init(
   }
 );
 
-Product.belongsTo("Category");
+Product.belongsTo(Category);
+Product.belongsToMany(Tag, {through: ProductTag, foreignKey: "product_id"});
 
 module.exports = Product;
