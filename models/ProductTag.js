@@ -29,4 +29,6 @@ ProductTag.init(
   }
 );
 
+ProductTag.sync();
+
 module.exports = ProductTag;
