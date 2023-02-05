@@ -44,61 +44,34 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   // create a new category
-  try {
-    const result = await sequelize.transaction(async (t) => {
       Category.create(req.body, {
         include: Product
-      }, {
-        transaction: t
       })
         .then((category) => {
           res.status(201).json(`Category created:\n${category}`);
         })
         .catch(err => res.status(500).json("Category could not be created."));
     });
-  }
-  catch (err) {
-    res.status(400).json("Unable to create category.");
-  }
-});
 
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
-  try {
-    const result = await sequelize.transaction(async (t) => {
       Category.update(req.body, {
         where: {
           id: req.params.id
         }
-      }, {
-        transaction: t
       })
       .then((category) => {res.status(200).json(`Category updated:\n${category}`)})
       .catch(err => res.status(500).json(err));
     });
-  }
-  catch (err) {
-    res.status(400).json(err);
-  }
-});
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
-  try {
-    const result = await sequelize.transaction(async (t) => {
       await Category.destroy({
         where: {
           id: req.params.id
         }
-      }, {
-        transaction: t
       });
       res.status(200).json("Category deleted.");
     });
-  }
-  catch (err) {
-    res.status(400).json(err);
-  }
-});
 
 module.exports = router;
