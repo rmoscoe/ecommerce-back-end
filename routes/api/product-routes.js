@@ -7,44 +7,27 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
-  try {
-    const result = await sequelize.transaction(async (t) => {
-      const allProducts = await Product.findAll({
-        include: [Category, Tag]
-      }, {
-        transaction: t
-      });
-      res.status(200).json(allProducts);
-    });
-  }
-  catch (err) {
-    res.status(500).json("Error retrieving products.");
-  }
+
+  const allProducts = await Product.findAll({
+    include: [Category, Tag]
+  });
+  res.status(200).json(allProducts);
 });
 
 // get one product
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
-  try {
-    const result = await sequelize.transaction(async (t) => {
-      const product = await Product.findOne({
-        where: {
-          id: req.params.id
-        },
-        include: [Category, Tag]
-      }, {
-        transaction: t
-      });
-      if (!product) {
-        res.status(404).json("No matching products.");
-      } else {
-        res.status(200).json(product);
-      }
-    });
-  }
-  catch (err) {
-    res.status(500).json("Error retrieving product.");
+  const product = await Product.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [Category, Tag]
+  });
+  if (!product) {
+    res.status(404).json("No matching products.");
+  } else {
+    res.status(200).json(product);
   }
 });
 
@@ -124,19 +107,13 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
-  try {
-    const result = await sequelize.transaction(async (t) => {
-      await Product.destroy({
-        where: {
-          id: req.params.id
-        }
-      });
-      res.status(200).json("Product deleted.");
-    });
-  }
-  catch (err) {
-    res.status(500).json("Product could not be deleted.");
-  }
+  await Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  });
+  res.status(200).json("Product deleted.");
 });
+
 
 module.exports = router;
