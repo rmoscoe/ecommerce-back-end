@@ -9,11 +9,8 @@ router.get('/', async (req, res) => {
       const allTags = await Tag.findAll({
         include: [{
           model: Product,
-          attributes: ["product_name", "price", "stock"]
-        },
-        {
-          model: Category,
-          attributes: ["cateogry_name"]
+          attributes: ["product_name", "price", "stock"],
+          through: {attributes: []}
         }]
       });
       res.status(200).json(allTags);
@@ -28,11 +25,8 @@ router.get('/:id', async (req, res) => {
         },
         include: [{
           model: Product,
-          attributes: ["product_name", "price", "stock"]
-        },
-        {
-          model: Category,
-          attributes: ["cateogry_name"]
+          attributes: ["product_name", "price", "stock"],
+          through: {attributes: []}
         }]
       });
       res.status(200).json(tag);
